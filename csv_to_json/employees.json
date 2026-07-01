@@ -1,0 +1,23 @@
+[
+    {
+        "id":101,
+        "name":"Saine",
+        "age":25,
+        "department":"AI",
+        "salary":50000
+    },
+    {
+        "id":102,
+        "name":"Rahul",
+        "age":28,
+        "department":"Backend",
+        "salary":60000
+    },
+    {
+        "id":103,
+        "name":"Priya",
+        "age":26,
+        "department":"Data Science",
+        "salary":55000
+    }
+]
