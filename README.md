@@ -1,5 +1,13 @@
 # Employee Management System API
 
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Framework-green)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-brightgreen)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange)
+
+# Employee Management System API
+
 A backend Employee Management System built using **FastAPI** and **MongoDB Atlas**. The project provides secure JWT authentication, employee management, department management, attendance tracking, leave management, file uploads, dashboard APIs, unit testing, and Docker support.
 
 ---
