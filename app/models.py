@@ -17,3 +17,23 @@ class User(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+    
+class Department(BaseModel):
+    department_id: int
+    department_name: str
+    manager: str
+    location: str
+    
+class Attendance(BaseModel):
+    employee_id: int
+    date: str
+    status: str
+    check_in: str
+    check_out: str
+class Leave(BaseModel):
+    employee_id: int
+    leave_type: str
+    from_date: str
+    to_date: str
+    reason: str
+    status: str

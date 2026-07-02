@@ -1,20 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException
-
-from app.models import Employee
+from fastapi import APIRouter, Query, HTTPException
 from app.database import employees_collection
-from app.dependencies import get_current_user
+from app.models import Employee
 
-router = APIRouter(
-    prefix="/employees",
-    tags=["Employees"]
-)
+router = APIRouter()
 
 
-@router.post("/")
-def add_employee(
-    employee: Employee,
-    current_user: str = Depends(get_current_user)
-):
+# Create Employee
+@router.post("/employees")
+def add_employee(employee: Employee):
 
     employee_dict = employee.model_dump()
 
@@ -25,26 +18,42 @@ def add_employee(
     }
 
 
-@router.get("/")
+# Get Employees with Pagination
+from fastapi import Query
+
+@router.get("/employees")
 def get_all_employees(
-    current_user: str = Depends(get_current_user)
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1),
+    search: str = Query(None)
 ):
+    skip = (page - 1) * limit
+
+    query = {}
+
+    if search:
+        query = {
+            "$or": [
+                {"name": {"$regex": search, "$options": "i"}},
+                {"department": {"$regex": search, "$options": "i"}},
+                {"designation": {"$regex": search, "$options": "i"}},
+                {"email": {"$regex": search, "$options": "i"}}
+            ]
+        }
 
     employees = []
 
-    for employee in employees_collection.find():
+    cursor = employees_collection.find(query).skip(skip).limit(limit)
+
+    for employee in cursor:
         employee["_id"] = str(employee["_id"])
         employees.append(employee)
 
     return employees
 
-
-@router.put("/{employee_id}")
-def update_employee(
-    employee_id: int,
-    employee: Employee,
-    current_user: str = Depends(get_current_user)
-):
+# Update Employee
+@router.put("/employees/{employee_id}")
+def update_employee(employee_id: int, employee: Employee):
 
     result = employees_collection.update_one(
         {"employee_id": employee_id},
@@ -62,11 +71,9 @@ def update_employee(
     }
 
 
-@router.delete("/{employee_id}")
-def delete_employee(
-    employee_id: int,
-    current_user: str = Depends(get_current_user)
-):
+# Delete Employee
+@router.delete("/employees/{employee_id}")
+def delete_employee(employee_id: int):
 
     result = employees_collection.delete_one(
         {"employee_id": employee_id}
